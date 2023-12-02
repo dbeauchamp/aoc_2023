@@ -19,7 +19,7 @@ fn main() {
         .map(|l| parse_game(l))
         .collect();
 
-    let mut ids: Vec<usize> = Vec::new();
+    let mut powers: Vec<usize> = Vec::new();
     for game in games {
 
         let mut max_blue = 0;
@@ -44,12 +44,10 @@ fn main() {
             }
         }
 
-        if max_blue <= 14 && max_red <= 12 && max_green <= 13 {
-            ids.push(game.id);
-        }
+        powers.push(max_blue * max_red * max_green);
     }
 
-    let sum: usize = ids.iter().sum();
+    let sum: usize = powers.iter().sum();
 
     println!("{sum}");
 }
