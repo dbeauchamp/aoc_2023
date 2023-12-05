@@ -3,7 +3,7 @@ use std::collections::HashSet;
 fn main() {
     let input = include_str!("../input/input.txt");
 
-    let scores: Vec<u32> = input
+    let scores: Vec<usize> = input
         .lines()
         .map(|line| {
             let mut card_numbers = line
@@ -23,15 +23,18 @@ fn main() {
                 .collect();
 
             let winners: Vec<u32> = winning.intersection(&ours).copied().collect();
-            winners
+            winners.len()
         })
-        .collect::<Vec<Vec<u32>>>()
-        .iter()
-        .filter(|nums| nums.len() > 0)
-        .map(|nums| score(nums.len() as u32))
         .collect();
 
-    let sum: u32 = scores.iter().sum();
+    let mut counts: Vec<usize> = vec![1; scores.len()];
+    for (i, score) in scores.iter().enumerate() {
+        for j in i+1..=(i+score) {
+            counts[j] += 1*counts[i];
+        }
+    }
+
+    let sum: usize = counts.iter().sum();
     println!("{sum}");
 }
 
