@@ -18,10 +18,10 @@ fn main() {
     for (i, line) in input.lines().enumerate() {
         for (j, c) in line.chars().enumerate() {
             match c {
-                '.' | '0'..='9' => continue,
-                _ => {
+                '*' => {
                     // search through each part_number
                     let curr = (j as i32, i as i32);
+                    let mut adjacent: Vec<u32> = Vec::new();
                     for pn in &mut part_numbers {
                         if pn.seen { continue; }
 
@@ -29,10 +29,15 @@ fn main() {
                         let range_y = (curr.1 - 1)..=(curr.1 + 1);
                         if range_x.contains(&curr.0) &&  range_y.contains(&pn.start.1) {
                             pn.seen = true;
-                            sum = sum + pn.number;
+                            adjacent.push(pn.number);
                         }
                     }
-                }
+
+                    if adjacent.len() == 2 {
+                        sum = sum + (adjacent[0] * adjacent[1]);
+                    }
+                },
+                _ => continue,
             }
         }
     }
